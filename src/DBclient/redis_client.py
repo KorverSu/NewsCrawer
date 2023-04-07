@@ -18,19 +18,20 @@ class RedisClient:
         except Exception as e:
             print("Delete from key {} fail value is {}\nError is: {}".format(key, value, e))
 
-    def get_set_elements(self, key: str):
+    def fetch_set_elements(self, key: str):
         try:
             elements = self.__r.smembers(key)
             return elements
         except Exception as e:
-            print("Get {} elements fail\nError is: {}".format(key, e))
+            print("Fetch {} elements fail\nError is: {}".format(key, e))
 
-    def get_set_elements_count(self, key: str):
+    def fetch_set_elements_count(self, key: str):
+        self.__r.close()
         try:
             count = self.__r.scard(key)
             return count
         except Exception as e:
-            print("Get {} count fail\nError is: {}".format(key, e))
+            print("Fetch {} count fail\nError is: {}".format(key, e))
 
     def set_random_pop(self, key: str):
         try:
@@ -38,3 +39,6 @@ class RedisClient:
             return element
         except Exception as e:
             print("Random pop element from {} fail\nError is: {}".format(key, e))
+
+    def __del__(self):
+        self.__r.close()

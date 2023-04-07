@@ -10,9 +10,6 @@ class Scraper:
         self.__driver = webdriver.Chrome(executable_path=DRIVER_PATH)
         self.__page_num = 1
 
-    def close_driver(self):
-        self.__driver.close()
-
     def visit_tvbs(self, news_id: str):
         # id ~ 2000000
         url = "https://news.tvbs.com.tw/politics/{}".format(news_id)
@@ -128,6 +125,9 @@ class Scraper:
         except Exception as e:
             print("The pts url is invalid: ", e)
 
+    def __del__(self):
+        self.__driver.close()
+
 
 if __name__ == '__main__':
     sc = Scraper()
@@ -137,4 +137,3 @@ if __name__ == '__main__':
     # sc.visit_ebc()
     # sc.visit_ttv()
     sc.visit_pts('629549')
-    sc.close_driver()
